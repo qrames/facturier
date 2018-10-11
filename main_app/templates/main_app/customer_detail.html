@@ -1,0 +1,23 @@
+{% extends "main_app/base.html" %}
+
+
+{% block content %}
+<div class="card" style="width: 18rem;">
+    <img class="card-img-top" src={{ customer.logo.url }} alt="Card image cap">
+    <div class="card-body">
+        <h5 class="card-title">{{customer.first_name}} {{customer.last_name}} {{customer.business}}</h5>
+        <address class="card-text">
+            {{customer.address}} <br>
+            {{customer.zipcode}} {{customer.city}} {{customer.country}}
+        </address>
+        <p>
+            phone : {{customer.phone_number}} / fax :{{customer.fax_number}}
+        </p>
+
+        <a href={% url 'edit-customer' customer.slug %} class="btn btn-primary">edit</a>
+        <a href={% url 'delete-customer' customer.slug %} class="btn btn-primary">delete</a>
+        <a href={% url 'add-quotation'%} class="btn btn-primary">Add Quotation</a>
+    </div>
+</div>
+
+{% endblock %}

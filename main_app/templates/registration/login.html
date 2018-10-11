@@ -1,0 +1,33 @@
+{% extends "main_app/base.html" %}
+
+{% block content %}
+<section id="log">
+
+   <div id="LoginForm">
+       <div class="container-fluid">
+           <h1 class="form-heading"></h1>
+           <div class="login-form">
+               <div class="main-div" style="height: 500px;">
+                   <div class="panel">
+                       <h2 style="font-family: fistfont; font-size: 4em; margin-top: 3em;">Login</h2>
+                       <p>Please enter your Username and password</p>
+                   </div>
+
+                   <form action="." method="post" class="form-horizontal">
+                       <input type="hidden" name="next" value="/">
+                       {% csrf_token %}
+                       {{form.username}}
+                       {{form.password}}
+
+                       <button type="submit" class="btn btn-primary">Login</button>
+
+                   </form>
+               </div>
+           </div>
+       </div>
+   </div>
+</section>
+
+
+
+{% endblock %}

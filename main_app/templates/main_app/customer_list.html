@@ -1,0 +1,18 @@
+{% extends "main_app/base.html" %}
+
+{% block content %}
+
+
+
+{% for customer in object_list %}
+<div class="card" style="width: 18rem;">
+    <img class="card-img-top" src={{ customer.logo.url }} alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">{{customer.first_name}} {{customer.last_name}} {{customer.business}} </h5>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <a href={% url 'detail-customer' customer.slug %} class="btn btn-primary">details</a> 
+      </div>
+    </div>
+{% endfor %}
+
+{% endblock %}

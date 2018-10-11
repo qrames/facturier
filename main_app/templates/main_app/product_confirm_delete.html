@@ -1,0 +1,11 @@
+{% extends "main_app/base.html" %}
+
+{% block content %}
+
+<form class="" action="." method="post">
+    {% csrf_token %}
+    <h1>Are you sure to want remove the : {{product.name}}</h1>
+    <button type="submit" name="submit">Comfirm</button>
+</form>
+
+{% endblock %}
