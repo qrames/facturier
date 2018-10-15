@@ -11,8 +11,8 @@
             {{product.description}}
         </p>
 
-        <a href={% url 'edit-product' product.code %} class="btn btn-primary">edit</a>
-        <a href={% url 'delete-product' product.code %} class="btn btn-primary">delete</a>
+        <a href="{% url 'edit-product' product.code %}" class="btn btn-primary">edit</a>
+        <a href="{% url 'delete-product' product.code %}" class="btn btn-primary">delete</a>
     </div>
 </div>
 

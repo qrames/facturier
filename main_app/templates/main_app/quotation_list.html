@@ -15,9 +15,10 @@
 <ul>
     {% for quotation in object_list %}
     <li>
-        {{ quotation.customer }}
-        {{ quotation.date }}
-        {{ quotation.status }}
+       {{ quotation.customer }} {{ quotation.date }} {{ quotation.status }}
+       
+        <a href={% url 'detail-quotation' quotation.id %} class="btn btn-primary">Voir</a>
+        <a href={% url 'delete-quotation' quotation.id %} class="btn btn-primary">supprimer</a>
     </li>
     {% endfor %}
 </ul>

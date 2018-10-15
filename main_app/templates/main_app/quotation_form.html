@@ -19,6 +19,7 @@
         </thead>
         <tbody id="formset">
         {% for formset in inlines %}
+        {{ formset.management_form }}
         {% for form in formset %}
             <tr id="{{ form.prefix }}-row">
                 <td>
@@ -33,8 +34,8 @@
         {% endfor %}
         </tbody>
         </table>
-    {{ formset.management_form }}
      </div>
+     <input type="hidden" value="A relancer" name="status">
     <button type="submit" class="btn btn-primary" name="submit">enregistrer</button>
 </form>
 

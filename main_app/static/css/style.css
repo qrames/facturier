@@ -2,3 +2,30 @@ body {
     background-image: url("rotatiing.gif");
     background-size: cover;
 }
+
+main {
+    background-color: azure;
+    height: 900px;
+}
+
+#quottable {
+    border-collapse: collapse;
+    font-size: 20px;
+    text-align: center;
+    margin-top: 5em;
+}
+
+#quottable td {
+    border: 1px solid black;
+}
+
+#entete {
+    color: blue;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+#btnend {
+    margin-top: 4em;
+    margin-left: 900px;
+}

@@ -1,12 +1,12 @@
+from django.db.models import Q
 from django.shortcuts import render, reverse
+from django.views.generic import TemplateView, ListView, CreateView, DetailView, UpdateView, DeleteView
 
 from extra_views import InlineFormSet, CreateWithInlinesView
 from extra_views.generic import GenericInlineFormSet
 
-
-from django.db.models import Q
-from django.views.generic import TemplateView, ListView, CreateView, DetailView, UpdateView, DeleteView
 from models import Customer, Product, Quotation, QuotationLine
+
 
 class IndexView(TemplateView):
     template_name = "main_app/index.html"
@@ -22,9 +22,9 @@ class ListCustomerView(ListView):
 
         if query != None:
 
-            return Customer.objects.filter(Q(first_name__contains=query) | Q(last_name__contains=query) |
-            Q(zipcode__contains=query) |
-            Q(business__contains=query))
+            return Customer.objects.filter(
+                Q(first_name__contains=query) | Q(last_name__contains=query)
+                | Q(zipcode__contains=query) | Q(business__contains=query))
 
         else:
 
@@ -57,7 +57,10 @@ class DeleteCustomerView(DeleteView):
     def get_success_url(self):
         return reverse("customers")
 
+
 # /////////////////////////////////
+
+
 class ListProductView(ListView):
     model = Product
 
@@ -67,7 +70,8 @@ class ListProductView(ListView):
 
         if query != None:
 
-            return Product.objects.filter(Q(name__contains=query) | Q(code__contains=query))
+            return Product.objects.filter(
+                Q(name__contains=query) | Q(code__contains=query))
 
         else:
 
@@ -90,11 +94,13 @@ class DetailProductView(DetailView):
 
 class UpdateProductView(UpdateView):
     model = Product
-    fields =('name',
-    'description',
-    'short_desc',
-    'pics',
-    'price',)
+    fields = (
+        'name',
+        'description',
+        'short_desc',
+        'pics',
+        'price',
+    )
     slug_field = 'code'
     slug_url_kwarg = 'code'
 
@@ -114,19 +120,18 @@ class DeleteProductView(DeleteView):
 # /////////////////////////////////
 
 
-class CreateQuotationView(CreateView):
-    model = Quotation
-    inlines = (QuotationLine,)
-
 class QuotationLineInLine(InlineFormSet):
     model = QuotationLine
     fields = "__all__"
 
+
 class QuotationFormSetView(CreateWithInlinesView):
     template_name = 'main_app/quotation_form.html'
     model = Quotation
-    success_url = 'success/'
-    inlines = [QuotationLineInLine,]
+    success_url = '/quotation'
+    inlines = [
+        QuotationLineInLine,
+    ]
     fields = "__all__"
 
 
@@ -141,11 +146,28 @@ class ListQuotationView(ListView):
 
         if query != None and filter != None:
 
-            return Quotation.objects.filter(Q(status__contains = filter) & (Q(customer__first_name__contains=query) | Q(customer__last_name__contains=query) |
-            Q(customer__zipcode__contains=query) |
-            Q(customer__business__contains=query))
-            )
+            return Quotation.objects.filter(
+                Q(status__contains=filter) &
+                (Q(customer__first_name__contains=query)
+                 | Q(customer__last_name__contains=query)
+                 | Q(customer__zipcode__contains=query)
+                 | Q(customer__business__contains=query)))
 
         else:
 
             return Quotation.objects.all()
+
+
+class DetailQuotationView(DetailView):
+    model = Quotation
+    slug_field = 'customer'
+    slug_url_kwarg = 'customer'
+
+
+class DeleteQuotationView(DeleteView):
+    model = Quotation
+    slug_field = 'customer'
+    slug_url_kwarg = 'customer'
+
+    def get_success_url(self):
+        return reverse("quotation")
