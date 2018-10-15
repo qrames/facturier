@@ -5,7 +5,7 @@ from django.views.generic import TemplateView, ListView, CreateView, DetailView,
 from extra_views import InlineFormSet, CreateWithInlinesView
 from extra_views.generic import GenericInlineFormSet
 
-from models import Customer, Product, Quotation, QuotationLine
+from models import Customer, Product, Quotation, QuotationLine, STATUS_CHOICES
 
 
 class IndexView(TemplateView):
@@ -157,11 +157,15 @@ class ListQuotationView(ListView):
 
             return Quotation.objects.all()
 
-
 class DetailQuotationView(DetailView):
     model = Quotation
     slug_field = 'customer'
     slug_url_kwarg = 'customer'
+
+    def get_context_data(self, **kwargs):
+        context = DetailView.get_context_data(self)
+        context['status_choices'] = STATUS_CHOICES
+        return context
 
 
 class DeleteQuotationView(DeleteView):

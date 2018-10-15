@@ -48,11 +48,16 @@ class BillLine(models.Model):
     product = models.ForeignKey('Product', on_delete=models.CASCADE)
     quantity = models.IntegerField()
 
+STATUS_CHOICES = (
+    ('A relancer', 'A relancer' ),
+    ('En cours', 'En cours' ),
+    ('A convertir', 'A convertir' ),
+)
 
 class Quotation(models.Model):
     date = models.DateTimeField(auto_now=True)
     customer = models.ForeignKey("Customer", verbose_name= ("client"), on_delete=models.CASCADE)
-    status = models.CharField( max_length=200, default='A relancer')
+    status = models.CharField( max_length=200, choices=STATUS_CHOICES , default='A relancer')
 
 
 class Bill(models.Model):

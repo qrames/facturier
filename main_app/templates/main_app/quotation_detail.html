@@ -4,16 +4,20 @@
 {% block content %}
 <div class="card" style="widtd: 40rem;">
     <div class="card-body">
-        <h4>DEVIS {{quotation.pk}} du {{quotation.date}} {{quotation.status}} </h4>
+        <h4>DEVIS {{quotation.pk}} du {{quotation.date}}
+            <a href="#" id="status" data-type="select" data-pk="{{quotation.pk}}" data-url={% url 'edit-field-quotation' quotation.id 'status' %} data-title="choisir un status">
+            {{quotation.status}}
+        </a>
+        </h4>
         <h5 class="card-title">French-E </br> 10 rue des jaules 75000 Paris cedex 15 </br>tel: 01 89 58 74 10 </br> fax : 01 89 58 74 11  </h5>
         <h6 class="card-title">{{quotation.customer.business}} </h6>
-
          <div>
             {{quotation.customer.first_name}} {{quotation.customer.last_name}} </br> {{quotation.customer.address}} {{quotation.customer.zipcode}} {{quotation.customer.city}} </br> {{quotation.customer.phone_number}}
         </div>
 
         <table id="quottable">
-        <threat>
+        <theader>
+
          <tr id="entete">
             <td>Code produit</td>
             <td>Désignation du produit</td>
@@ -21,33 +25,70 @@
             <td>Prix unitaire HT en €</td>
             <td>Montant HT en €</td>
         </tr>
+    </theader>
+    <form class="" action="index.html" method="post">
 
+    </form>
+    <input type="text" name="q" value="">
+    <tbody>
         {% for line in quotation.quotationline_set.all %}
-       
+
         <tr>
-            <td>{{line.product.code}}</td>
-            <td>{{line.product.name}}</td> 
-            <td>{{line.quantity}}</td>
-            <td>{{line.product.price}}</td>
+            <td>
+                {{line.product.code}}
+            </td>
+            <td>
+                {{line.product.name}}
+            </td>
+            <td>
+                <a href="#" id="quantity" data-type="number" data-pk={{line.id}} data-url={% url 'edit-field-line-quotation' line.id 'quantity' %} data-title="Enter Quantités">
+                    {{line.quantity}}
+                </a>
+            </td>
+            <td>
+                {{line.product.price}}
+            </td>
             <td>---</td>
         </tr>
+        {% endfor %}
+    </tbody>
+    <tfooter>
         <tr>
             <td colspan"4">TOTAL HT</td>
         </tr>
-         <tr>
+        <tr>
             <td colspan"4">TVA 20.6%%</td>
         </tr>
         <tr>
-          <td colspan"4">TOTAL TTC</td>
+            <td colspan"4">TOTAL TTC</td>
         </tr>
-        {% endfor %}
-       </threat>
-        </table>
+    </tfooter>
+    </table>
     <div id="btnend">
         <a href= class="btn btn-primary">edit</a>
         <a href={% url 'delete-quotation' quotation.id %} class="btn btn-primary">supprimer</a>
     </div>
     </div>
 </div>
+
+{% endblock %}
+{% block js_dependencies %}
+<script type="text/javascript">
+$(document).ready(function () {
+
+    $.fn.editable.defaults.mode = 'inline';
+    $('#status').editable({
+        source: [
+            {% for key, value  in status_choices %}
+            {
+               value: "{{key}}",
+               text: "{{value}}"
+            },
+           {% endfor %}
+        ]
+    });
+    $('#quantity').editable();
+});
+</script>
 
 {% endblock %}

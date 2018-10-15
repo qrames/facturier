@@ -34,8 +34,9 @@
         {% endfor %}
         </tbody>
         </table>
-     </div>
-     <input type="hidden" value="A relancer" name="status">
+    </div>
+    {% render_field form.status class+="form-control form-control-lg" placeholder="client"%}
+    <input type="hidden" value="A relancer" name="status">
     <button type="submit" class="btn btn-primary" name="submit">enregistrer</button>
 </form>
 
