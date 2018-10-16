@@ -1,5 +1,6 @@
 from django.db.models import Q
 from django.shortcuts import render, reverse
+
 from django.views.generic import TemplateView, ListView, CreateView, DetailView, UpdateView, DeleteView
 
 from extra_views import InlineFormSet, CreateWithInlinesView
@@ -151,11 +152,13 @@ class ListQuotationView(ListView):
                 (Q(customer__first_name__contains=query)
                  | Q(customer__last_name__contains=query)
                  | Q(customer__zipcode__contains=query)
-                 | Q(customer__business__contains=query)))
+                 | Q(customer__business__contains=query))
+                )
 
         else:
 
             return Quotation.objects.all()
+
 
 class DetailQuotationView(DetailView):
     model = Quotation
@@ -168,10 +171,12 @@ class DetailQuotationView(DetailView):
         return context
 
 
+
 class DeleteQuotationView(DeleteView):
     model = Quotation
     slug_field = 'customer'
     slug_url_kwarg = 'customer'
 
     def get_success_url(self):
+
         return reverse("quotation")

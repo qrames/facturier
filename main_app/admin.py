@@ -13,8 +13,10 @@ class ProductAdmin(admin.ModelAdmin):
 class CustomerAdmin(admin.ModelAdmin):
     model = Customer
 
+
 # ////////////////////////////////////////////////////
 class QuotationAdminForm(ModelForm):
+
     class Meta:
         model = Quotation
         fields = "__all__"
@@ -23,9 +25,11 @@ class QuotationAdminForm(ModelForm):
 class QuotationLineInLine(admin.TabularInline):
     model = QuotationLine
 
+
 class QuotationAdmin(admin.ModelAdmin):
     form = QuotationAdminForm
     inlines = (QuotationLineInLine,)
+
 
 admin.site.register(Quotation, QuotationAdmin)
 admin.site.register(Product)

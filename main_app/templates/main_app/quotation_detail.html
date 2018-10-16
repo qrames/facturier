@@ -14,7 +14,16 @@
          <div>
             {{quotation.customer.first_name}} {{quotation.customer.last_name}} </br> {{quotation.customer.address}} {{quotation.customer.zipcode}} {{quotation.customer.city}} </br> {{quotation.customer.phone_number}}
         </div>
-
+        <form action="." class="form-inline my-2 my-lg-0">
+            {% csrf_token %}
+            <input name="q" class="form-control mr-sm-2" type="search" placeholder="nom du produit" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">recherche</button>
+        </form>
+        <div class="produit">
+            {% for product in object_list %}
+            <a href="">{{product.name}}</a>
+            {% endfor %}
+        </div>
         <table id="quottable">
         <theader>
 
@@ -26,10 +35,7 @@
             <td>Montant HT en €</td>
         </tr>
     </theader>
-    <form class="" action="index.html" method="post">
 
-    </form>
-    <input type="text" name="q" value="">
     <tbody>
         {% for line in quotation.quotationline_set.all %}
 
@@ -41,29 +47,33 @@
                 {{line.product.name}}
             </td>
             <td>
-                <a href="#" id="quantity" data-type="number" data-pk={{line.id}} data-url={% url 'edit-field-line-quotation' line.id 'quantity' %} data-title="Enter Quantités">
+                <a href="#" class="quantity" data-type="number" data-pk={{line.id}} data-url={% url 'edit-field-line-quotation' line.id 'quantity' %} data-title="Enter Quantités">
                     {{line.quantity}}
                 </a>
             </td>
-            <td>
+            <td class="price">
                 {{line.product.price}}
             </td>
-            <td>---</td>
+            <td class="total-line">---</td>
         </tr>
         {% endfor %}
     </tbody>
     <tfooter>
         <tr>
-            <td colspan"4">TOTAL HT</td>
+            <td colspan="4">TOTAL HT</td>
+            <td id="total-ht"></td>
         </tr>
         <tr>
-            <td colspan"4">TVA 20.6%%</td>
+            <td colspan="4">TVA </td>
+            <td id="tva">20.6%</td>
         </tr>
         <tr>
-            <td colspan"4">TOTAL TTC</td>
+            <td colspan="4">TOTAL TTC</td>
+            <td id="total-ttc"></td>
         </tr>
     </tfooter>
     </table>
+    <button id="refresh">refresh</button>
     <div id="btnend">
         <a href= class="btn btn-primary">edit</a>
         <a href={% url 'delete-quotation' quotation.id %} class="btn btn-primary">supprimer</a>
@@ -87,8 +97,33 @@ $(document).ready(function () {
            {% endfor %}
         ]
     });
-    $('#quantity').editable();
+
+    $('.quantity').editable();
+    $('#refresh').click(function(){
+        total();
+    });
+
+    total();
+    function total(){
+
+        $('tbody tr').each(function(index, el) {
+            var price = $(this).children('td.price').html();
+            var quantity = $(this).children('td').children('a.quantity').html();
+            $(this).children('td.total-line').html(parseFloat(price) * parseFloat(quantity));
+        });
+
+        var total = 0;
+        $('.total-line').each(function(index, el) {
+            var value = $(this).html();
+            total += parseFloat(value);
+        });
+
+        $('#total-ht').html(total);
+        $('#total-ttc').html(total*(1 + parseFloat($('#tva').html())/100) + "€");
+    }
+
 });
+
 </script>
 
 {% endblock %}
