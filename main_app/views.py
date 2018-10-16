@@ -152,8 +152,7 @@ class ListQuotationView(ListView):
                 (Q(customer__first_name__contains=query)
                  | Q(customer__last_name__contains=query)
                  | Q(customer__zipcode__contains=query)
-                 | Q(customer__business__contains=query))
-                )
+                 | Q(customer__business__contains=query)))
 
         else:
 
@@ -169,7 +168,6 @@ class DetailQuotationView(DetailView):
         context = DetailView.get_context_data(self)
         context['status_choices'] = STATUS_CHOICES
         return context
-
 
 
 class DeleteQuotationView(DeleteView):

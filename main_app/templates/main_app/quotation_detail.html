@@ -14,11 +14,7 @@
          <div>
             {{quotation.customer.first_name}} {{quotation.customer.last_name}} </br> {{quotation.customer.address}} {{quotation.customer.zipcode}} {{quotation.customer.city}} </br> {{quotation.customer.phone_number}}
         </div>
-        <form action="." class="form-inline my-2 my-lg-0">
-            {% csrf_token %}
-            <input name="q" class="form-control mr-sm-2" type="search" placeholder="nom du produit" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">recherche</button>
-        </form>
+      
         <div class="produit">
             {% for product in object_list %}
             <a href="">{{product.name}}</a>
@@ -75,8 +71,8 @@
     </table>
     <button id="refresh">refresh</button>
     <div id="btnend">
-        <a href= class="btn btn-primary">edit</a>
-        <a href={% url 'delete-quotation' quotation.id %} class="btn btn-primary">supprimer</a>
+        <button id="add-line" class="btn btn-primary">ajouter un produit</button>
+        <a href={% url 'delete-quotation' quotation.id %} class="btn btn-primary">supprimer devis</a>
     </div>
     </div>
 </div>
@@ -122,6 +118,18 @@ $(document).ready(function () {
         $('#total-ttc').html(total*(1 + parseFloat($('#tva').html())/100) + "€");
     }
 
+
+   $('#add-line').click(function(){
+       console.log("aaaaaaaaaaaaaaaa");
+        $.ajax({
+            type: "POST",
+            url: {% url 'create-field-line-quotation' quotation.id '125873'%},
+
+            success: function(){
+                alerte("whoua!!");
+            }
+        });
+    })
 });
 
 </script>

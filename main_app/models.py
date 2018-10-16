@@ -10,7 +10,7 @@ from django_extensions.db.fields import AutoSlugField
 class Customer(models.Model):
     first_name = models.CharField(max_length=50, null=False, default="")
     last_name = models.CharField(max_length=50, null=True)
-    slug = AutoSlugField(populate_from = ['first_name', 'last_name'])
+    slug = AutoSlugField(populate_from=['first_name', 'last_name'])
     business = models.CharField(max_length=150, null=True)
     siren = models.IntegerField()
     logo = models.ImageField(upload_to="user", null=True)
@@ -48,19 +48,25 @@ class BillLine(models.Model):
     product = models.ForeignKey('Product', on_delete=models.CASCADE)
     quantity = models.IntegerField()
 
+
 STATUS_CHOICES = (
-    ('A relancer', 'A relancer' ),
-    ('En cours', 'En cours' ),
-    ('A convertir', 'A convertir' ),
+    ('A relancer', 'A relancer'),
+    ('En cours', 'En cours'),
+    ('A convertir', 'A convertir'),
 )
+
 
 class Quotation(models.Model):
     date = models.DateTimeField(auto_now=True)
-    customer = models.ForeignKey("Customer", verbose_name= ("client"), on_delete=models.CASCADE)
-    status = models.CharField( max_length=200, choices=STATUS_CHOICES , default='A relancer')
+    customer = models.ForeignKey(
+        "Customer", verbose_name=("client"), on_delete=models.CASCADE)
+    status = models.CharField(
+        max_length=200, choices=STATUS_CHOICES, default='A relancer')
 
 
 class Bill(models.Model):
     date = models.DateTimeField(auto_now=True)
-    quotation = models.ForeignKey("Quotation", verbose_name= ("devis"), on_delete=models.CASCADE)
-    status = models.CharField( max_length=200, default='En attente de reglement')
+    quotation = models.ForeignKey(
+        "Quotation", verbose_name=("devis"), on_delete=models.CASCADE)
+    status = models.CharField(
+        max_length=200, default='En attente de reglement')
