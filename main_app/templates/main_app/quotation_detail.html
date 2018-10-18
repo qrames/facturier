@@ -32,7 +32,7 @@
         </tr>
     </theader>
 
-    <tbody>
+    <tbody id="lines">
         {% for line in quotation.quotationline_set.all %}
 
         <tr>
@@ -72,9 +72,9 @@
 
     <form class="" action="{% url 'create-field-line-quotation' %}" method="post">
         {% csrf_token %}
-        {{ form.as_p }}
-        <input id="add-line" class="btn btn-primary" type="submit" name="button" value="ajouter un produit">
     </form>
+    {{ form.as_p }}
+    <input id="add-line" class="btn btn-primary" type="button" name="button" value="ajouter un produit">
     <button id="refresh">refresh</button>
     <div id="btnend">
         <a href={% url 'delete-quotation' quotation.id %} class="btn btn-primary">supprimer devis</a>
@@ -129,33 +129,55 @@ $(document).ready(function () {
     // $('#target').html('sending..');
 
 
-    // $('#add-line').click(function(event){
-    //     event.preventDefault();
-    //     console.log($('#id_product').val());
-    //
-    //     var line = {
-    //        productId: parseInt($('#id_product').val()),
-    //        quantity: parseInt($('#id_quantity').val()),
-    //        quotationId: {{quotation.id}},
-    //    }
-    //   //  var line = {
-    //   //     productId: parseInt(6),
-    //   //     quantity: parseInt(5),
-    //   //     quotationId: {{quotation.id}},
-    //   // }
-    //
-    //    $.ajax({
-    //        url: "{% url 'create-field-line-quotation' %}",
-    //        type: 'post',
-    //        dataType: 'json',
-    //        contentType: 'application/json',
-    //        success: function (data) {
-    //            alerte("whoua!!");
-    //            // $('#target').html(data.msg);
-    //        },
-    //        data: JSON.stringify(line)
-    //    });
-    // })
+    $('#add-line').click(function(event){
+        event.preventDefault();
+        console.log($('#id_product').val());
+
+        var line = {
+           productId: parseInt($('#id_product').val()),
+           quantity: parseInt($('#id_quantity').val()),
+           quotationId: {{quotation.id}},
+       }
+      //  var line = {
+      //     productId: parseInt(6),
+      //     quantity: parseInt(5),
+      //     quotationId: {{quotation.id}},
+      // }
+
+       $.ajax({
+           url: "{% url 'create-field-line-quotation' %}",
+           type: 'post',
+           dataType: 'json',
+           contentType: 'application/json',
+           success: function (responce) {
+
+               $('#lines').append(`
+                 <tr>
+                     <td>
+                         ${responce.code}
+                     </td>
+                     <td>
+                         ${responce.name}
+                     </td>
+                     <td>
+                     <a href="#" class="quantity" data-type="number" data-pk={{responce.id}} data-url="${responce.data_url_quantity}" data-title="Enter Quantités">
+                         ${responce.quantity}
+                     </a>
+                     </td>
+                     <td class="price">
+                         ${responce.price}
+                     </td>
+                     <td class="total-line">---</td>
+                 </tr>`);
+                 $('.quantity').editable();
+                 total();
+           },
+           error: function() {
+             console.log('asd:;vqd;,qd;v, ');
+           },
+           data: JSON.stringify(line)
+       });
+    })
 });
 
 

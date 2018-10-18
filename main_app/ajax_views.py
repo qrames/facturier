@@ -1,5 +1,5 @@
 from django.views.generic import View, CreateView
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 
 from django.shortcuts import render, reverse
 
@@ -43,22 +43,51 @@ class CreateQuotationLineView(CreateView):
     model = QuotationLine
     form_class = QuotationLineForm
 
-    # def post(self, request, *args, **kwargs):
-    #
-    #     data = request.body
-    #     quotationId = json.loads(data)['quotationId']
-    #     productId = json.loads(data)['productId']
-    #     quantity = json.loads(data)['quantity']
-    #
-    #     product = Product.objects.get(id=productId)
-    #     quotation = Quotation.objects.get(id=quotationId)
-    #     print(">>>>>>>>>>>>>>>>>>>>>>>>>><>>>>>>>>>>>>>>>>>>>")
-    #     print(quotation)
-    #     print(product)
-    #     print(quantity)
-    #     print(">>>>>>>>>>>>>>>>>>>>>><>>>>>>>>>>>>>>>>>>>>>>>")
-    #
-    #     return HttpResponse("success")
+    def post(self, request, *args, **kwargs):
+
+        data = request.body
+        quotationId = json.loads(data)['quotationId']
+        productId = json.loads(data)['productId']
+        quantity = json.loads(data)['quantity']
+
+        product = Product.objects.get(id=productId)
+        quotation = Quotation.objects.get(id=quotationId)
+
+        # CreateView.post(self, request, kwargs)
+        line =  QuotationLine.objects.create(quotation=quotation, product=product, quantity=quantity)
+        return JsonResponse({
+            "data_url_quantity": reverse("edit-field-line-quotation", args=[line.id, 'quantity']),
+            "name" : line.product.name,
+            "quantity" : line.quantity,
+            "price" : line.product.price,
+            "id": line.id,
+            "code": line.product.code,
+        })
 
     def get_success_url(self):
         return reverse("detail-quotation", args=[self.object.quotation.id])
+
+
+# @method_decorator(csrf_exempt, name='dispatch')
+# class DeleteQuotationLineView(DeleteView):
+#     model = QuotationLine
+#
+#
+#     def post(self, request, *args, **kwargs):
+#
+#         data = request.body
+#         quotationId = json.loads(data)['quotationId']
+#         productId = json.loads(data)['productId']
+#         quantity = json.loads(data)['quantity']
+#
+#
+#         product = Product.objects.get(id=productId)
+#         quotation = Quotation.objects.get(id=quotationId)
+#
+#         # CreateView.post(self, request, kwargs)
+#         line =  QuotationLine.objects.get(quotation=quotation, product=product, quantity=quantity)
+#         line.delete()
+#
+#
+#     def get_success_url(self):
+#         return reverse("detail-quotation", args=[self.object.quotation.id])
