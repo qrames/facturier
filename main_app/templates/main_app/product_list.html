@@ -11,6 +11,7 @@
         <h5 class="card-title">{{product.name}} {{product.price}} </h5>
         <p class="card-text">{{product.short_desc}}</p>
         <a href={% url 'detail-product' product.code %} class="btn btn-primary">details</a>
+        {{product.id}}
       </div>
     </div>
 {% endfor %}

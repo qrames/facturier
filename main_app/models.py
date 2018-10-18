@@ -64,6 +64,8 @@ class Quotation(models.Model):
         max_length=200, choices=STATUS_CHOICES, default='A relancer')
 
 
+
+
 class Bill(models.Model):
     date = models.DateTimeField(auto_now=True)
     quotation = models.ForeignKey(

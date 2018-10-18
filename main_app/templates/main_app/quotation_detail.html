@@ -14,7 +14,7 @@
          <div>
             {{quotation.customer.first_name}} {{quotation.customer.last_name}} </br> {{quotation.customer.address}} {{quotation.customer.zipcode}} {{quotation.customer.city}} </br> {{quotation.customer.phone_number}}
         </div>
-      
+
         <div class="produit">
             {% for product in object_list %}
             <a href="">{{product.name}}</a>
@@ -69,9 +69,14 @@
         </tr>
     </tfooter>
     </table>
+
+    <form class="" action="{% url 'create-field-line-quotation' %}" method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input id="add-line" class="btn btn-primary" type="submit" name="button" value="ajouter un produit">
+    </form>
     <button id="refresh">refresh</button>
     <div id="btnend">
-        <button id="add-line" class="btn btn-primary">ajouter un produit</button>
         <a href={% url 'delete-quotation' quotation.id %} class="btn btn-primary">supprimer devis</a>
     </div>
     </div>
@@ -119,18 +124,40 @@ $(document).ready(function () {
     }
 
 
-   $('#add-line').click(function(){
-       console.log("aaaaaaaaaaaaaaaa");
-        $.ajax({
-            type: "POST",
-            url: {% url 'create-field-line-quotation' quotation.id '125873'%},
 
-            success: function(){
-                alerte("whoua!!");
-            }
-        });
-    })
+
+    // $('#target').html('sending..');
+
+
+    // $('#add-line').click(function(event){
+    //     event.preventDefault();
+    //     console.log($('#id_product').val());
+    //
+    //     var line = {
+    //        productId: parseInt($('#id_product').val()),
+    //        quantity: parseInt($('#id_quantity').val()),
+    //        quotationId: {{quotation.id}},
+    //    }
+    //   //  var line = {
+    //   //     productId: parseInt(6),
+    //   //     quantity: parseInt(5),
+    //   //     quotationId: {{quotation.id}},
+    //   // }
+    //
+    //    $.ajax({
+    //        url: "{% url 'create-field-line-quotation' %}",
+    //        type: 'post',
+    //        dataType: 'json',
+    //        contentType: 'application/json',
+    //        success: function (data) {
+    //            alerte("whoua!!");
+    //            // $('#target').html(data.msg);
+    //        },
+    //        data: JSON.stringify(line)
+    //    });
+    // })
 });
+
 
 </script>
 

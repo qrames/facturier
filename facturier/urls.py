@@ -53,7 +53,7 @@ urlpatterns = [
     url(r'^quotation/delete/(?P<pk>[\d]+)/$',
         DeleteQuotationView.as_view(),
         name="delete-quotation"),
-    url(r'^quotation-line/add/(?P<id>[\d]+)/(?P<code>[\d]+)$',
+    url(r'^quotation-line/add/$',
         CreateQuotationLineView.as_view(),
         name="create-field-line-quotation"),
     url(r'^quotation-line/(?P<id>[\d]+)/(?P<field_name>[-\w]+)$',

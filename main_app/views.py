@@ -8,6 +8,8 @@ from extra_views.generic import GenericInlineFormSet
 
 from models import Customer, Product, Quotation, QuotationLine, STATUS_CHOICES
 
+from form import QuotationLineForm
+
 
 class IndexView(TemplateView):
     template_name = "main_app/index.html"
@@ -167,6 +169,7 @@ class DetailQuotationView(DetailView):
     def get_context_data(self, **kwargs):
         context = DetailView.get_context_data(self)
         context['status_choices'] = STATUS_CHOICES
+        context['form'] = QuotationLineForm(initial={"quotation" : self.object})
         return context
 
 

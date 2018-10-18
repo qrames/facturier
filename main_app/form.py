@@ -1,13 +1,9 @@
-from extra_views import FormSetView
-from extra_views import ModelFormSetView
+from models import QuotationLine
+
+from django.forms import ModelForm
 
 
-class quotaionLineFormSetView(ModelFormSetView):
-    model = QuotationLine
-    template_name = 'quotation_line_formset.html'
-    fields = '__all__'
-
-
-class QuotationFormSet(FormSetView):
-    form_class = QuotationForm
-    template_name = 'quotation_formset.html'
+class QuotationLineForm(ModelForm):
+    class Meta:
+        model = QuotationLine
+        fields = '__all__'
