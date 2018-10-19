@@ -52,7 +52,7 @@
           </td>
           <td class="total-line">---</td>
           <td>
-              <input data-url="{% url 'delete-field-line-quotation' line.id %}" class="delete-line btn btn-primary" type="button" name="button" value="supprimer le produit">
+              <input id="{{line.id}}" data-url="{% url 'delete-field-line-quotation' line.id %}" class="delete-line btn btn-primary" type="button" name="button" value="supprimer le produit">
           </td>
         </tr>
         {% endfor %}
@@ -173,13 +173,13 @@
                      </td>
                      <td class="total-line">---</td>
                      <td>
-                         <input data-url="${responce.data_url_delete}" class="delete-line btn btn-primary" type="button" name="button" value="supprimer le produit">
+                         <input id="${responce.id}" data-url="${responce.data_url_delete}" class="delete-line btn btn-primary" type="button" name="button" value="supprimer le produit">
                      </td>
 
                  </tr>`
           );
           $('.quantity').editable();
-          set_ajax_delete();
+          // set_ajax_delete();
           total();
         },
         error: function() {
@@ -190,17 +190,20 @@
     })
 
 
-    function set_ajax_delete(){
+    // function set_ajax_delete(){
+    //
+    // $("#lines tr").each(function(index, el) {
+    //
+    //     var idLineProduct  = $(this).attr('id');
 
-    $("#lines tr").each(function(index, el) {
-
-        var idLineProduct  = $(this).attr('id');
-
-        $(this).children('td').children('.delete-line').click({idLineProduct: idLineProduct}, function(event) {
+        $('.delete-line').click( function(event) {
           event.preventDefault();
-          console.log(event.data.idLineProduct);
+
           console.log($(this).attr('data-url'));
           var url = $(this).attr('data-url');
+
+          console.log($(this).attr('id'));
+          var id = $(this).attr('id');
 
           $.ajax({
             url: url,
@@ -209,7 +212,7 @@
             contentType: 'application/json',
 
             success: function() {
-              $('#'+event.data.idLineProduct).remove();
+              $('#line-'+id).remove();
               $('.quantity').editable();
               total();
             },
@@ -220,8 +223,8 @@
 
           });
         });
-      });
-    }
+    //   });
+    // }
 
 
 
