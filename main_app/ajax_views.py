@@ -57,6 +57,8 @@ class CreateQuotationLineView(CreateView):
         return JsonResponse({
             "data_url_quantity":
             reverse("edit-field-line-quotation", args=[line.id, 'quantity']),
+            "data_url_delete":
+            reverse("delete-field-line-quotation", args=[line.id,]),
             "name":
             line.product.name,
             "quantity":
@@ -76,6 +78,10 @@ class CreateQuotationLineView(CreateView):
 @method_decorator(csrf_exempt, name='dispatch')
 class DeleteQuotationLineView(DeleteView):
     model = QuotationLine
+
+    def post(self, request, *args, **kwargs):
+        DeleteView.post(self, request, *args, **kwargs)
+        return JsonResponse({})
 
     def get_success_url(self):
         return reverse("detail-quotation", args=[self.object.quotation.id])

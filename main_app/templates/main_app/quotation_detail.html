@@ -3,126 +3,132 @@
 
 {% block content %}
 <div class="card" style="widtd: 40rem;">
-    <div class="card-body">
-        <h4>DEVIS {{quotation.pk}} du {{quotation.date}}
+  <div class="card-body">
+    <h4>DEVIS {{quotation.pk}} du {{quotation.date}}
             <a href="#" id="status" data-type="select" data-pk="{{quotation.pk}}" data-url={% url 'edit-field-quotation' quotation.id 'status' %} data-title="choisir un status">
             {{quotation.status}}
         </a>
         </h4>
-        <h5 class="card-title">French-E </br> 10 rue des jaules 75000 Paris cedex 15 </br>tel: 01 89 58 74 10 </br> fax : 01 89 58 74 11  </h5>
-        <h6 class="card-title">{{quotation.customer.business}} </h6>
-         <div>
-            {{quotation.customer.first_name}} {{quotation.customer.last_name}} </br> {{quotation.customer.address}} {{quotation.customer.zipcode}} {{quotation.customer.city}} </br> {{quotation.customer.phone_number}}
-        </div>
+    <h5 class="card-title">French-E </br> 10 rue des jaules 75000 Paris cedex 15 </br>tel: 01 89 58 74 10 </br> fax : 01 89 58 74 11  </h5>
+    <h6 class="card-title">{{quotation.customer.business}} </h6>
+    <div>
+      {{quotation.customer.first_name}} {{quotation.customer.last_name}} </br> {{quotation.customer.address}} {{quotation.customer.zipcode}} {{quotation.customer.city}} </br> {{quotation.customer.phone_number}}
+    </div>
 
-        <div class="produit">
-            {% for product in object_list %}
-            <a href="">{{product.name}}</a>
-            {% endfor %}
-        </div>
-        <table id="quottable">
-        <theader>
+    <div class="produit">
+      {% for product in object_list %}
+      <a href="">{{product.name}}</a>
+      {% endfor %}
+    </div>
+    <table id="quottable">
+      <theader>
 
-         <tr id="entete">
-            <td>Code produit</td>
-            <td>Désignation du produit</td>
-            <td>Quantités souhaitées</td>
-            <td>Prix unitaire HT en €</td>
-            <td>Montant HT en €</td>
+        <tr id="entete">
+          <td>Code produit</td>
+          <td>Désignation du produit</td>
+          <td>Quantités souhaitées</td>
+          <td>Prix unitaire HT en €</td>
+          <td>Montant HT en €</td>
         </tr>
-    </theader>
+      </theader>
 
-    <tbody id="lines">
+      <tbody id="lines">
         {% for line in quotation.quotationline_set.all %}
 
-        <tr>
-            <td>
-                {{line.product.code}}
-            </td>
-            <td>
-                {{line.product.name}}
-            </td>
-            <td>
-                <a href="#" class="quantity" data-type="number" data-pk={{line.id}} data-url={% url 'edit-field-line-quotation' line.id 'quantity' %} data-title="Enter Quantités">
-                    {{line.quantity}}
-                </a>
-            </td>
-            <td class="price">
-                {{line.product.price}}
-            </td>
-            <td class="total-line">---</td>
-           <td> <a href={% url 'delete-field-line-quotation' product.code %} class="btn btn-primary">supprimer la ligne</a></td>
+        <tr id="line-{{line.id}}">
+          <td>
+            {{line.product.code}}
+          </td>
+          <td>
+            {{line.product.name}}
+          </td>
+          <td>
+            <a href="#" class="quantity" data-type="number" data-pk={{line.id}} data-url={% url 'edit-field-line-quotation' line.id 'quantity' %} data-title="Enter Quantités">
+              {{line.quantity}}
+            </a>
+          </td>
+          <td class="price">
+            {{line.product.price}}
+          </td>
+          <td class="total-line">---</td>
+          <td>
+              <input data-url="{% url 'delete-field-line-quotation' line.id %}" class="delete-line btn btn-primary" type="button" name="button" value="supprimer le produit">
+          </td>
         </tr>
         {% endfor %}
-    </tbody>
-    <tfooter>
+      </tbody>
+      <tfooter>
         <tr>
-            <td colspan="4">TOTAL HT</td>
-            <td id="total-ht"></td>
+          <td colspan="4">TOTAL HT</td>
+          <td id="total-ht"></td>
         </tr>
         <tr>
-            <td colspan="4">TVA </td>
-            <td id="tva">20.6%</td>
+          <td colspan="4">TVA </td>
+          <td id="tva">20.6%</td>
         </tr>
         <tr>
-            <td colspan="4">TOTAL TTC</td>
-            <td id="total-ttc"></td>
+          <td colspan="4">TOTAL TTC</td>
+          <td id="total-ttc"></td>
         </tr>
-    
-    </tfooter>
+
+      </tfooter>
     </table>
 
+    <!--
     <form class="" action="{% url 'create-field-line-quotation' %}" method="post">
-        {% csrf_token %}
+      {% csrf_token %}
     </form>
-    {{ form.as_p }}
-    <input id="add-line" class="btn btn-primary" type="button" name="button" value="ajouter un produit">
+    -->
+    <div class="from">
+      {{ form.as_p }}
+      <input id="add-line" class="btn btn-primary" type="button" name="button" value="ajouter un produit">
+    </div>
     <button id="refresh">refresh</button>
     <div id="btnend">
-        <a href={% url 'delete-quotation' quotation.id %} class="btn btn-primary">supprimer devis</a>
+      <a href={% url 'delete-quotation' quotation.id %} class="btn btn-primary">supprimer devis</a>
     </div>
-    </div>
+  </div>
 </div>
 
 {% endblock %}
 {% block js_dependencies %}
+
 <script type="text/javascript">
-$(document).ready(function () {
+  $(document).ready(function() {
 
     $.fn.editable.defaults.mode = 'inline';
     $('#status').editable({
-        source: [
-            {% for key, value  in status_choices %}
-            {
-               value: "{{key}}",
-               text: "{{value}}"
-            },
-           {% endfor %}
-        ]
+      source: [{%for key, value in status_choices %} {
+          value: "{{key}}",
+          text: "{{value}}"
+        },
+        {% endfor %}
+      ]
     });
 
     $('.quantity').editable();
-    $('#refresh').click(function(){
-        total();
+    $('#refresh').click(function() {
+      total();
     });
 
     total();
-    function total(){
 
-        $('tbody tr').each(function(index, el) {
-            var price = $(this).children('td.price').html();
-            var quantity = $(this).children('td').children('a.quantity').html();
-            $(this).children('td.total-line').html(parseFloat(price) * parseFloat(quantity));
-        });
+    function total() {
 
-        var total = 0;
-        $('.total-line').each(function(index, el) {
-            var value = $(this).html();
-            total += parseFloat(value);
-        });
+      $('tbody tr').each(function(index, el) {
+        var price = $(this).children('td.price').html();
+        var quantity = $(this).children('td').children('a.quantity').html();
+        $(this).children('td.total-line').html(parseFloat(price) * parseFloat(quantity));
+      });
 
-        $('#total-ht').html(total);
-        $('#total-ttc').html(total*(1 + parseFloat($('#tva').html())/100) + "€");
+      var total = 0;
+      $('.total-line').each(function(index, el) {
+        var value = $(this).html();
+        total += parseFloat(value);
+      });
+
+      $('#total-ht').html(total);
+      $('#total-ttc').html(total * (1 + parseFloat($('#tva').html()) / 100) + "€");
     }
 
 
@@ -131,30 +137,26 @@ $(document).ready(function () {
     // $('#target').html('sending..');
 
 
-    $('#add-line').click(function(event){
-        event.preventDefault();
-        console.log($('#id_product').val());
+    $('#add-line').click(function(event) {
+      event.preventDefault();
+      console.log($('#id_product').val());
 
-        var line = {
-           productId: parseInt($('#id_product').val()),
-           quantity: parseInt($('#id_quantity').val()),
-           quotationId: {{quotation.id}},
-       }
-      //  var line = {
-      //     productId: parseInt(6),
-      //     quantity: parseInt(5),
-      //     quotationId: {{quotation.id}},
-      // }
+      var line = {
+        productId: parseInt($('#id_product').val()),
+        quantity: parseInt($('#id_quantity').val()),
+        quotationId: {{quotation.id}},
+      }
 
-       $.ajax({
-           url: "{% url 'create-field-line-quotation' %}",
-           type: 'post',
-           dataType: 'json',
-           contentType: 'application/json',
-           success: function (responce) {
+      $.ajax({
+        url: "{% url 'create-field-line-quotation' %}",
+        type: 'post',
+        dataType: 'json',
+        contentType: 'application/json',
+        success: function(responce) {
 
-               $('#lines').append(`
-                 <tr>
+          $('#lines').append(
+            `
+                 <tr id="line-${responce.id}">
                      <td>
                          ${responce.code}
                      </td>
@@ -162,7 +164,7 @@ $(document).ready(function () {
                          ${responce.name}
                      </td>
                      <td>
-                     <a href="#" class="quantity" data-type="number" data-pk={{responce.id}} data-url="${responce.data_url_quantity}" data-title="Enter Quantités">
+                     <a href="#" class="quantity" data-type="number" data-pk="${responce.id}" data-url="${responce.data_url_quantity}" data-title="Enter Quantités">
                          ${responce.quantity}
                      </a>
                      </td>
@@ -170,19 +172,59 @@ $(document).ready(function () {
                          ${responce.price}
                      </td>
                      <td class="total-line">---</td>
-                 </tr>`);
-                 $('.quantity').editable();
-                 total();
-           },
-           error: function() {
-             console.log('asd:;vqd;,qd;v, ');
-           },
-           data: JSON.stringify(line)
-       });
+                     <td>
+                         <input data-url="${responce.data_url_delete}" class="delete-line btn btn-primary" type="button" name="button" value="supprimer le produit">
+                     </td>
+
+                 </tr>`
+          );
+          $('.quantity').editable();
+          total();
+        },
+        error: function() {
+          console.log('error no add the line');
+        },
+        data: JSON.stringify(line)
+      });
     })
-});
 
 
+
+    $("#lines tr").each(function(index, el) {
+
+      var idLineProduct  = $(this).attr('id');
+
+      $(this).children('td').children('.delete-line').click({idLineProduct: idLineProduct}, function(event) {
+        event.preventDefault();
+        console.log(event.data.idLineProduct);
+        console.log($(this).attr('data-url'));
+        var url = $(this).attr('data-url');
+
+        $.ajax({
+          url: url,
+          type: 'post',
+          dataType: 'json',
+          contentType: 'application/json',
+
+          success: function() {
+            $('#'+event.data.idLineProduct).remove();
+            $('.quantity').editable();
+            total();
+          },
+
+          error: function() {
+            console.log('error no delete');
+          },
+
+        });
+      });
+    });
+
+
+
+
+
+  });
 </script>
 
 {% endblock %}
