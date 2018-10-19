@@ -179,7 +179,6 @@
                  </tr>`
           );
           $('.quantity').editable();
-          // set_ajax_delete();
           total();
         },
         error: function() {
@@ -190,42 +189,33 @@
     })
 
 
-    // function set_ajax_delete(){
-    //
-    // $("#lines tr").each(function(index, el) {
-    //
-    //     var idLineProduct  = $(this).attr('id');
+    $('.delete-line').click( function(event) {
+      event.preventDefault();
 
-        $('.delete-line').click( function(event) {
-          event.preventDefault();
+      console.log($(this).attr('data-url'));
+      var url = $(this).attr('data-url');
 
-          console.log($(this).attr('data-url'));
-          var url = $(this).attr('data-url');
+      console.log($(this).attr('id'));
+      var id = $(this).attr('id');
 
-          console.log($(this).attr('id'));
-          var id = $(this).attr('id');
+      $.ajax({
+        url: url,
+        type: 'post',
+        dataType: 'json',
+        contentType: 'application/json',
 
-          $.ajax({
-            url: url,
-            type: 'post',
-            dataType: 'json',
-            contentType: 'application/json',
+        success: function() {
+          $('#line-'+id).remove();
+          $('.quantity').editable();
+          total();
+        },
 
-            success: function() {
-              $('#line-'+id).remove();
-              $('.quantity').editable();
-              total();
-            },
+        error: function() {
+          console.log('error no delete');
+        },
 
-            error: function() {
-              console.log('error no delete');
-            },
-
-          });
-        });
-    //   });
-    // }
-
+      });
+    });
 
 
 
