@@ -179,6 +179,7 @@
                  </tr>`
           );
           $('.quantity').editable();
+          set_ajax_delete();
           total();
         },
         error: function() {
@@ -189,36 +190,38 @@
     })
 
 
+    function set_ajax_delete(){
 
     $("#lines tr").each(function(index, el) {
 
-      var idLineProduct  = $(this).attr('id');
+        var idLineProduct  = $(this).attr('id');
 
-      $(this).children('td').children('.delete-line').click({idLineProduct: idLineProduct}, function(event) {
-        event.preventDefault();
-        console.log(event.data.idLineProduct);
-        console.log($(this).attr('data-url'));
-        var url = $(this).attr('data-url');
+        $(this).children('td').children('.delete-line').click({idLineProduct: idLineProduct}, function(event) {
+          event.preventDefault();
+          console.log(event.data.idLineProduct);
+          console.log($(this).attr('data-url'));
+          var url = $(this).attr('data-url');
 
-        $.ajax({
-          url: url,
-          type: 'post',
-          dataType: 'json',
-          contentType: 'application/json',
+          $.ajax({
+            url: url,
+            type: 'post',
+            dataType: 'json',
+            contentType: 'application/json',
 
-          success: function() {
-            $('#'+event.data.idLineProduct).remove();
-            $('.quantity').editable();
-            total();
-          },
+            success: function() {
+              $('#'+event.data.idLineProduct).remove();
+              $('.quantity').editable();
+              total();
+            },
 
-          error: function() {
-            console.log('error no delete');
-          },
+            error: function() {
+              console.log('error no delete');
+            },
 
+          });
         });
       });
-    });
+    }
 
 
 
