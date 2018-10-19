@@ -12,7 +12,7 @@ from main_app.views import ListProductView, CreateProductView, DetailProductView
 
 from main_app.views import QuotationFormSetView, ListQuotationView, DetailQuotationView, DeleteQuotationView
 
-from main_app.ajax_views import QuotationFieldEditView, QuotationLineFieldEditView, CreateQuotationLineView
+from main_app.ajax_views import QuotationFieldEditView, QuotationLineFieldEditView, CreateQuotationLineView, DeleteQuotationLineView
 
 urlpatterns = [
     url(r'^$', IndexView.as_view(), name="index"),
@@ -56,6 +56,9 @@ urlpatterns = [
     url(r'^quotation-line/add/$',
         CreateQuotationLineView.as_view(),
         name="create-field-line-quotation"),
+    url(r'^quotation-line/delete/(?P<code>[-\w]+)/$',
+        DeleteQuotationLineView.as_view(),
+        name="delete-field-line-quotation"),
     url(r'^quotation-line/(?P<id>[\d]+)/(?P<field_name>[-\w]+)$',
         QuotationLineFieldEditView.as_view(),
         name="edit-field-line-quotation"),
