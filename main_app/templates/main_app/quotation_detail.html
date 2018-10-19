@@ -51,6 +51,7 @@
                 {{line.product.price}}
             </td>
             <td class="total-line">---</td>
+           <td> <a href={% url 'delete-field-line-quotation' product.code %} class="btn btn-primary">supprimer la ligne</a></td>
         </tr>
         {% endfor %}
     </tbody>
@@ -67,6 +68,7 @@
             <td colspan="4">TOTAL TTC</td>
             <td id="total-ttc"></td>
         </tr>
+    
     </tfooter>
     </table>
 

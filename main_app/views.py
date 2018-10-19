@@ -169,14 +169,12 @@ class DetailQuotationView(DetailView):
     def get_context_data(self, **kwargs):
         context = DetailView.get_context_data(self)
         context['status_choices'] = STATUS_CHOICES
-        context['form'] = QuotationLineForm(initial={"quotation" : self.object})
+        context['form'] = QuotationLineForm(initial={"quotation": self.object})
         return context
 
 
 class DeleteQuotationView(DeleteView):
     model = Quotation
-    slug_field = 'customer'
-    slug_url_kwarg = 'customer'
 
     def get_success_url(self):
 
