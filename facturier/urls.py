@@ -12,7 +12,9 @@ from main_app.views import ListProductView, CreateProductView, DetailProductView
 
 from main_app.views import QuotationFormSetView, ListQuotationView, DetailQuotationView, DeleteQuotationView
 
-from main_app.ajax_views import QuotationFieldEditView, QuotationLineFieldEditView, CreateQuotationLineView, DeleteQuotationLineView
+from main_app.views import ListBillView, DetailBillView, DeleteBillView
+
+from main_app.ajax_views import QuotationFieldEditView, QuotationLineFieldEditView, CreateQuotationLineView, DeleteQuotationLineView, BillView
 
 urlpatterns = [
     url(r'^$', IndexView.as_view(), name="index"),
@@ -53,6 +55,15 @@ urlpatterns = [
     url(r'^quotation/delete/(?P<pk>[\d]+)/$',
         DeleteQuotationView.as_view(),
         name="delete-quotation"),
+
+    #/////////////////////////////////////////
+    url(r'^bill-view/add/$', BillView.as_view(), name="add-bill"),
+    url(r'^bills/$', ListBillView.as_view(), name="bills"),
+    url(r'^bill/(?P<pk>[\d]+)/$', DetailBillView.as_view(),
+        name="detail-bill"),
+    url(r'^bill/delete/(?P<pk>[\d]+)/$',
+        DeleteBillView.as_view(),
+        name="delete-bill"),
 
     # ////////////////////////////////////////
     url(r'^quotation-line/add/$',

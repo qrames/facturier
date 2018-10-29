@@ -1,8 +1,8 @@
 from django.contrib import admin
 
-
 from django.forms import ModelForm
-from .models import Product, Customer, Quotation, QuotationLine
+from .models import Product, Customer, Quotation, QuotationLine, BillLine, Bill
+
 # Register your models here.
 
 
@@ -16,7 +16,6 @@ class CustomerAdmin(admin.ModelAdmin):
 
 # ////////////////////////////////////////////////////
 class QuotationAdminForm(ModelForm):
-
     class Meta:
         model = Quotation
         fields = "__all__"
@@ -28,7 +27,19 @@ class QuotationLineInLine(admin.TabularInline):
 
 class QuotationAdmin(admin.ModelAdmin):
     form = QuotationAdminForm
-    inlines = (QuotationLineInLine,)
+    inlines = (QuotationLineInLine, )
+
+
+class BillLineInLine(admin.TabularInline):
+    model = BillLine
+
+
+class BillAdminForm(ModelForm):
+    model = Bill
+
+
+class BillAdmin(admin.ModelAdmin):
+    form = BillAdminForm
 
 
 admin.site.register(Quotation, QuotationAdmin)

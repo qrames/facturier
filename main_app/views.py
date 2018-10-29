@@ -6,7 +6,7 @@ from django.views.generic import TemplateView, ListView, CreateView, DetailView,
 from extra_views import InlineFormSet, CreateWithInlinesView
 from extra_views.generic import GenericInlineFormSet
 
-from models import Customer, Product, Quotation, QuotationLine, STATUS_CHOICES
+from models import Customer, Product, Quotation, QuotationLine, STATUS_CHOICES, Bill, BillLine
 
 from form import QuotationLineForm
 
@@ -179,3 +179,65 @@ class DeleteQuotationView(DeleteView):
     def get_success_url(self):
 
         return reverse("quotation")
+
+
+#///////////////////////////////////////////////////////////////////////////////////
+class BillLineInLine(InlineFormSet):
+    model = BillLine
+    fields = "__all__"
+
+
+class BillFormSetView(CreateWithInlinesView):
+
+    model = Bill
+    success_url = '/bill'
+    inlines = [
+        QuotationLineInLine,
+    ]
+    fields = "__all__"
+
+    def get_queryset(self, *args, **kargs):
+        quotation_id = self.request.GET.get('quotation', None)
+
+
+class ListBillView(ListView):
+    model = Bill
+
+    def get_queryset(self, *args, **kargs):
+        query = self.request.GET.get('q', None)
+        filter = self.request.GET.get('status', None)
+
+        print "QUERY=", query
+
+        if query != None and filter != None:
+
+            return Bill.objects.filter(
+                Q(status__contains=filter) &
+                (Q(customer__first_name__contains=query)
+                 | Q(customer__last_name__contains=query)
+                 | Q(customer__zipcode__contains=query)
+                 | Q(customer__business__contains=query)))
+
+        else:
+
+            return Bill.objects.all()
+
+
+class DetailBillView(DetailView):
+    model = Bill
+    slug_field = 'customer'
+    slug_url_kwarg = 'customer'
+
+    def get_context_data(self, **kwargs):
+        context = DetailView.get_context_data(self)
+        context['status_choices'] = STATUS_CHOICES
+        context['form'] = BillLineForm(initial={"bill": self.object})
+        return context
+
+
+class DeleteBillView(DeleteView):
+    model = Bill
+
+    def get_success_url(self):
+
+        return reverse("Bill")

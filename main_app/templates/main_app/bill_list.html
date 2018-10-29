@@ -1,0 +1,26 @@
+{% extends "main_app/base.html" %}
+{% load widget_tweaks %}
+{% block content %}
+<form action="." class="form-inline my-2 my-lg-0">
+    {% csrf_token %}
+    <select class="" name="status">
+        <option value="">----</option>
+        <option value="A relancer">A relancer</option>
+        <option value="En cours">En cours</option>
+        <option value="Valider">Valider</option>
+    </select>
+    <input name="q" class="form-control mr-sm-2" type="search" placeholder="nom du client" aria-label="Search">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">recherche</button>
+</form>
+<ul>
+    {% for bill in object_list %}
+    <li>
+       {{ bill.customer }} {{ bill.date }} {{ bill.status }}
+       
+        <a href={% url 'detail-bill' bill.id %} class="btn btn-primary">Voir</a>
+        <a href={% url 'delete-bill' bill.id %} class="btn btn-primary">supprimer</a>
+    </li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

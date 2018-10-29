@@ -7,7 +7,7 @@ from form import QuotationLineForm
 
 import json
 
-from models import QuotationLine, Quotation, Product
+from models import QuotationLine, Quotation, Product, Bill
 
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
@@ -58,7 +58,9 @@ class CreateQuotationLineView(CreateView):
             "data_url_quantity":
             reverse("edit-field-line-quotation", args=[line.id, 'quantity']),
             "data_url_delete":
-            reverse("delete-field-line-quotation", args=[line.id,]),
+            reverse("delete-field-line-quotation", args=[
+                line.id,
+            ]),
             "name":
             line.product.name,
             "quantity":
@@ -85,3 +87,11 @@ class DeleteQuotationLineView(DeleteView):
 
     def get_success_url(self):
         return reverse("detail-quotation", args=[self.object.quotation.id])
+
+
+class BillView(View):
+    def post(self, request, *args, **kwargs):
+        data = request.body
+        quotationId = json.loads(data)['quotationId']
+        productId = json.loads(data)['productId']
+        quantity = json.loads(data)['quantity']

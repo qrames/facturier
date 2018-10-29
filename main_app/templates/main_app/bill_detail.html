@@ -4,15 +4,15 @@
 {% block content %}
 <div class="card" style="widtd: 40rem;">
   <div class="card-body">
-    <h4>DEVIS {{quotation.pk}} du {{quotation.date}}
-            <a href="#" id="status" data-type="select" data-pk="{{quotation.pk}}" data-url={% url 'edit-field-quotation' quotation.id 'status' %} data-title="choisir un status">
-            {{quotation.status}}
+    <h4>FACTURE {{bill.pk}} du {{bill.date}}
+            <a href="#" id="status" data-type="select" data-pk="{{bill.pk}}" data-url={% url 'detail-bill' bill.id 'status' %} data-title="choisir un status">
+            {{bill.status}}
         </a>
         </h4>
     <h5 class="card-title">French-E </br> 10 rue des jaules 75000 Paris cedex 15 </br>tel: 01 89 58 74 10 </br> fax : 01 89 58 74 11  </h5>
-    <h6 class="card-title">{{quotation.customer.business}} </h6>
+    <h6 class="card-title">{{bill.customer.business}} </h6>
     <div>
-      {{quotation.customer.first_name}} {{quotation.customer.last_name}} </br> {{quotation.customer.address}} {{quotation.customer.zipcode}} {{quotation.customer.city}} </br> {{quotation.customer.phone_number}}
+      {{bill.customer.first_name}} {{bill.customer.last_name}} </br> {{bill.customer.address}} {{bill.customer.zipcode}} {{bill.customer.city}} </br> {{bill.customer.phone_number}}
     </div>
 
     <div class="produit">
@@ -33,7 +33,7 @@
       </theader>
 
       <tbody id="lines">
-        {% for line in quotation.quotationline_set.all %}
+        {% for line in bill.billline_set.all %}
 
         <tr id="line-{{line.id}}">
           <td>
@@ -43,7 +43,7 @@
             {{line.product.name}}
           </td>
           <td>
-            <a href="#" class="quantity" data-type="number" data-pk={{line.id}} data-url={% url 'edit-field-line-quotation' line.id 'quantity' %} data-title="Enter Quantités">
+            <a href="#" class="quantity" data-type="number" data-pk={{line.id}} data-url={% url 'edit-field-line-bill' line.id 'quantity' %} data-title="Enter Quantités">
               {{line.quantity}}
             </a>
           </td>
@@ -52,7 +52,7 @@
           </td>
           <td class="total-line">---</td>
           <td>
-              <input id="{{line.id}}" data-url="{% url 'delete-field-line-quotation' line.id %}" class="delete-line btn btn-primary" type="button" name="button" value="supprimer le produit">
+              <input id="{{line.id}}" data-url="{% url 'delete-field-line-bill' line.id %}" class="delete-line btn btn-primary" type="button" name="button" value="supprimer le produit">
           </td>
         </tr>
         {% endfor %}
@@ -75,7 +75,7 @@
     </table>
 
     <!--
-    <form class="" action="{% url 'create-field-line-quotation' %}" method="post">
+    <form class="" action="{% url 'create-field-line-bill' %}" method="post">
       {% csrf_token %}
     </form>
     -->
@@ -85,11 +85,7 @@
     </div>
     <button id="refresh">refresh</button>
     <div id="btnend">
-      <a href={% url 'delete-quotation' quotation.id %} class="btn btn-primary">supprimer devis</a>
-       <form id="add_bill" action={% url 'add-bill' %} method="get">
-      <input type="hidden" name="quotation" val="{{quotation.id}}">
-       <button type="submit" name="submit"class="btn btn-primary">Transformer en facture</button>
-       </form>
+      <a href={% url 'delete-bill' bill.id %} class="btn btn-primary">supprimer devis</a>
     </div>
   </div>
 </div>
@@ -148,11 +144,11 @@
       var line = {
         productId: parseInt($('#id_product').val()),
         quantity: parseInt($('#id_quantity').val()),
-        quotationId: {{quotation.id}},
+        billId: {{bill.id}},
       }
 
       $.ajax({
-        url: "{% url 'create-field-line-quotation' %}",
+        url: "{% url 'create-field-line-bill' %}",
         type: 'post',
         dataType: 'json',
         contentType: 'application/json',
@@ -224,10 +220,6 @@
           });
         });
     };
-
-
-
-
 
 
 
