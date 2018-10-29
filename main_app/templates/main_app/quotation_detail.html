@@ -88,7 +88,7 @@
       <a href={% url 'delete-quotation' quotation.id %} class="btn btn-primary">supprimer devis</a>
        <form id="add_bill" action={% url 'add-bill' %} method="get">
       <input type="hidden" name="quotation" val="{{quotation.id}}">
-       <button type="submit" name="submit"class="btn btn-primary">Transformer en facture</button>
+       <button type="submit" class="btn btn-primary">Transformer en facture</button>
        </form>
     </div>
   </div>
