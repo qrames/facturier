@@ -87,11 +87,3 @@ class DeleteQuotationLineView(DeleteView):
 
     def get_success_url(self):
         return reverse("detail-quotation", args=[self.object.quotation.id])
-
-
-class BillView(View):
-    def post(self, request, *args, **kwargs):
-        data = request.body
-        quotationId = json.loads(data)['quotationId']
-        productId = json.loads(data)['productId']
-        quantity = json.loads(data)['quantity']

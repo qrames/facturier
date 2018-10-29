@@ -84,10 +84,12 @@
       <input id="add-line" class="btn btn-primary" type="button" name="button" value="ajouter un produit">
     </div>
     <button id="refresh">refresh</button>
+    <a href={% url 'quotation-pdf' quotation.id %}>PDF</a>
     <div id="btnend">
       <a href={% url 'delete-quotation' quotation.id %} class="btn btn-primary">supprimer devis</a>
-       <form id="add_bill" action={% url 'add-bill' %} method="get">
-      <input type="hidden" name="quotation" val="{{quotation.id}}">
+       <form id="add_bill" action={% url 'add-bill' %} method="post">
+           {% csrf_token %}
+      <input type="hidden" name="quotation" value="{{quotation.id}}">
        <button type="submit" class="btn btn-primary">Transformer en facture</button>
        </form>
     </div>

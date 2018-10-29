@@ -1,15 +1,19 @@
 from django.db.models import Q
 from django.shortcuts import render, reverse
+from django.conf import settings
 
-from django.views.generic import TemplateView, ListView, CreateView, DetailView, UpdateView, DeleteView
+from django.views.generic import TemplateView, ListView, CreateView, DetailView, UpdateView, DeleteView, View
 
 from extra_views import InlineFormSet, CreateWithInlinesView
 from extra_views.generic import GenericInlineFormSet
 
 from models import Customer, Product, Quotation, QuotationLine, STATUS_CHOICES, Bill, BillLine
 
+import json
+
 from form import QuotationLineForm
 
+from django_weasyprint import WeasyTemplateResponseMixin
 
 class IndexView(TemplateView):
     template_name = "main_app/index.html"
@@ -175,29 +179,41 @@ class DetailQuotationView(DetailView):
 
 class DeleteQuotationView(DeleteView):
     model = Quotation
-
+    template_name = 'main_app/quotation_detail.html'
     def get_success_url(self):
 
         return reverse("quotation")
 
 
+class QuotationPrintView(WeasyTemplateResponseMixin, DetailQuotationView):
+    # output of DetailView rendered as PDF
+    template_name = 'main_app/quotation_detail_pdf.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(DetailQuotationView, self).get_context_data(**kwargs)
+        context['total'] = 0
+        lines = QuotationLine.objects.filter(quotation=self.kwargs['pk'])
+
+        for line in lines:
+            context['total'] += line.quantity * line.product.price
+
+        context['ttc'] = context['total']*20.6
+
+        return context
+
 #///////////////////////////////////////////////////////////////////////////////////
-class BillLineInLine(InlineFormSet):
-    model = BillLine
-    fields = "__all__"
 
+class BillView(View):
+    # success_url = "/bills"
 
-class BillFormSetView(CreateWithInlinesView):
+    def post(self, request, *args, **kwargs):
+        id_quotation = request.POST.get('quotation')
+        quotation = Quotation.objects.filter(id=id_quotation)[0]
+        bill = Bill.objects.create(quotation=quotation)
+        lines = QuotationLine.objects.filter(quotation = quotation)
+        for line in lines:
+            BillLine.objects.create(bill=bill, product=line.product, quantity=line.quantity)
 
-    model = Bill
-    success_url = '/bill'
-    inlines = [
-        QuotationLineInLine,
-    ]
-    fields = "__all__"
-
-    def get_queryset(self, *args, **kargs):
-        quotation_id = self.request.GET.get('quotation', None)
 
 
 class ListBillView(ListView):
@@ -227,17 +243,3 @@ class DetailBillView(DetailView):
     model = Bill
     slug_field = 'customer'
     slug_url_kwarg = 'customer'
-
-    def get_context_data(self, **kwargs):
-        context = DetailView.get_context_data(self)
-        context['status_choices'] = STATUS_CHOICES
-        context['form'] = BillLineForm(initial={"bill": self.object})
-        return context
-
-
-class DeleteBillView(DeleteView):
-    model = Bill
-
-    def get_success_url(self):
-
-        return reverse("Bill")

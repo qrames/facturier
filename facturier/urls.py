@@ -10,11 +10,11 @@ from main_app.views import ListCustomerView, CreateCustomerView, DetailCustomerV
 
 from main_app.views import ListProductView, CreateProductView, DetailProductView, UpdateProductView, DeleteProductView
 
-from main_app.views import QuotationFormSetView, ListQuotationView, DetailQuotationView, DeleteQuotationView
+from main_app.views import QuotationFormSetView, ListQuotationView, DetailQuotationView, DeleteQuotationView, QuotationPrintView
 
-from main_app.views import ListBillView, DetailBillView, DeleteBillView
+from main_app.views import ListBillView, DetailBillView, BillView
 
-from main_app.ajax_views import QuotationFieldEditView, QuotationLineFieldEditView, CreateQuotationLineView, DeleteQuotationLineView, BillView
+from main_app.ajax_views import QuotationFieldEditView, QuotationLineFieldEditView, CreateQuotationLineView, DeleteQuotationLineView
 
 urlpatterns = [
     url(r'^$', IndexView.as_view(), name="index"),
@@ -61,9 +61,6 @@ urlpatterns = [
     url(r'^bills/$', ListBillView.as_view(), name="bills"),
     url(r'^bill/(?P<pk>[\d]+)/$', DetailBillView.as_view(),
         name="detail-bill"),
-    url(r'^bill/delete/(?P<pk>[\d]+)/$',
-        DeleteBillView.as_view(),
-        name="delete-bill"),
 
     # ////////////////////////////////////////
     url(r'^quotation-line/add/$',
@@ -79,6 +76,8 @@ urlpatterns = [
         QuotationFieldEditView.as_view(),
         name="edit-field-quotation"),
 
+    # ////////////////////////////////////////
+    url(r'^generate/(?P<pk>[\d]+)/pdf/$', QuotationPrintView.as_view(), name='quotation-pdf'),
     # ////////////////////////////////////////
     url(r'^admin/', admin.site.urls),
     url(r'^login/$', auth_views.LoginView.as_view(), name="login"),

@@ -1,7 +1,8 @@
 django
 django-extensions
 django-autocomplete-light
-pillow
 django-phonenumber-field
+pillow
+django-weasyprint
 django-widget-tweaks
 django-extra-views
