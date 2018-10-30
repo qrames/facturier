@@ -10,7 +10,9 @@ from main_app.views import ListCustomerView, CreateCustomerView, DetailCustomerV
 
 from main_app.views import ListProductView, CreateProductView, DetailProductView, UpdateProductView, DeleteProductView
 
-from main_app.views import QuotationFormSetView, ListQuotationView, DetailQuotationView, DeleteQuotationView, QuotationPrintView
+from main_app.views import QuotationFormSetView, ListQuotationView, DetailQuotationView, DeleteQuotationView
+
+from main_app.views import send_pdf
 
 from main_app.views import ListBillView, DetailBillView, BillView
 
@@ -77,7 +79,7 @@ urlpatterns = [
         name="edit-field-quotation"),
 
     # ////////////////////////////////////////
-    url(r'^generate/(?P<pk>[\d]+)/pdf/$', QuotationPrintView.as_view(), name='quotation-pdf'),
+    url(r'^generate/(?P<pk>[\d]+)/pdf/$', send_pdf, name='quotation-pdf'),
     # ////////////////////////////////////////
     url(r'^admin/', admin.site.urls),
     url(r'^login/$', auth_views.LoginView.as_view(), name="login"),

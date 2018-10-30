@@ -1,14 +1,14 @@
 {% extends "main_app/base.html" %}
 
+{% block header %}
 
+{% endblock %}
 {% block content %}
 <div class="card" style="widtd: 40rem;">
   <div class="card-body">
     <h4>DEVIS {{quotation.pk}} du {{quotation.date}}
-            <a href="#" id="status" data-type="select" data-pk="{{quotation.pk}}" data-url={% url 'edit-field-quotation' quotation.id 'status' %} data-title="choisir un status">
-            {{quotation.status}}
-        </a>
-        </h4>
+        {{quotation.status}}
+    </h4>
     <h5 class="card-title">French-E </br> 10 rue des jaules 75000 Paris cedex 15 </br>tel: 01 89 58 74 10 </br> fax : 01 89 58 74 11  </h5>
     <h6 class="card-title">{{quotation.customer.business}} </h6>
     <div>
@@ -73,4 +73,7 @@
   </div>
 </div>
 
+{% endblock %}
+
+{% block script %}
 {% endblock %}

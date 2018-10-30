@@ -16,9 +16,8 @@
     {% for bill in object_list %}
     <li>
        {{ bill.customer }} {{ bill.date }} {{ bill.status }}
-       
+
         <a href={% url 'detail-bill' bill.id %} class="btn btn-primary">Voir</a>
-        <a href={% url 'delete-bill' bill.id %} class="btn btn-primary">supprimer</a>
     </li>
     {% endfor %}
 </ul>

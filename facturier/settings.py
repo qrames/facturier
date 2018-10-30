@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/1.11/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
-
+from email import my_email, email_password
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -139,3 +139,13 @@ MEDIA_URL = '/media/'
 
 LOGIN_URL = "/login"
 LOGOUT_URL = "/logout"
+
+
+# EMAIL :
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'localhost'
+EMAIL_PORT = 465
+EMAIL_HOST_USER =  my_email
+EMAIL_HOST_PASSWORD = email_password
+EMAIL_USE_TLS = False
+DEFAULT_FROM_EMAIL = 'Server <server@whatever.com>'

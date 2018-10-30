@@ -1,3 +1,4 @@
 /node_modules/
 *.pyc
 /media/
+/facturier/email.py

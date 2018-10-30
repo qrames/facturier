@@ -13,7 +13,11 @@ import json
 
 from form import QuotationLineForm
 
-from django_weasyprint import WeasyTemplateResponseMixin
+
+from django.core.mail import EmailMessage
+from weasyprint import HTML, CSS
+from django.template.loader import render_to_string
+from django.http import HttpResponse
 
 class IndexView(TemplateView):
     template_name = "main_app/index.html"
@@ -185,21 +189,50 @@ class DeleteQuotationView(DeleteView):
         return reverse("quotation")
 
 
-class QuotationPrintView(WeasyTemplateResponseMixin, DetailQuotationView):
-    # output of DetailView rendered as PDF
-    template_name = 'main_app/quotation_detail_pdf.html'
+def send_pdf(request, pk):
 
-    def get_context_data(self, **kwargs):
-        context = super(DetailQuotationView, self).get_context_data(**kwargs)
-        context['total'] = 0
-        lines = QuotationLine.objects.filter(quotation=self.kwargs['pk'])
+    quotation = Quotation.objects.get(id=pk)
+    print quotation, type(quotation)
+    context = {'quotation': quotation}
+    context['total'] = 0
 
-        for line in lines:
-            context['total'] += line.quantity * line.product.price
+    lines = QuotationLine.objects.filter(quotation=pk)
 
-        context['ttc'] = context['total']*20.6
+    for line in lines:
+        context['total'] += line.quantity * line.product.price
 
-        return context
+    context['ttc'] = context['total']*20.6
+    # print context, type(context)
+
+    html = render_to_string('main_app/quotation_detail_pdf.html', context)
+    # print html
+
+    filename = 'quotation_' + pk + '_'+ quotation.customer.first_name + '_' + quotation.customer.last_name + '.pdf'
+
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'filename=' + filename
+    # print response
+
+    pdf = HTML(string=html).write_pdf(
+        stylesheets=[CSS(string='body { font-family: serif}')]
+    )
+
+    to_emails = [quotation.customer.email]
+
+    subject = "French-E Quotation du :" + quotation.date.strftime('%Y-%m-%d %H:%M')
+
+
+    email = EmailMessage(
+        subject, body=pdf, from_email=settings.EMAIL_HOST_USER, to=to_emails
+    )
+
+    email.attach(response['Content-Disposition'], pdf, "application/pdf")
+
+    email.content_subtype = "pdf"  # Main content is now text/html
+    email.encoding = 'us-ascii'
+    email.send()
+
+    return HttpResponse(pdf, content_type='application/pdf')
 
 #///////////////////////////////////////////////////////////////////////////////////
 

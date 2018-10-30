@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+   <meta charset="utf-8" />
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <title>Facturier</title>
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <link rel="stylesheet" href="/static/bootstrap/dist/css/bootstrap.min.css">
+   <link rel="stylesheet" href="/static/css/style.css">
+   <link rel="stylesheet" href="/static/css/jquery.autocomplete.css">
+   <link rel="stylesheet" href="/static/x-editable/dist/jquery-editable/js/jquery-editable-poshytip.min.js">
+
+</head>
+
+
+<body>
+   <div id="page" class="container container-fluid">
+
+       <header>
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-primary">
+  <a class="navbar-brand" style="color:white;font-weight: bold; font-size: 3em;"href="#">French-E</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+
+        <a class="nav-link" style="color:white;font-weight: bold;" href="/">Home <span class="sr-only">(current)</span></a>
+      </li>
+
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" style="color:white;font-weight: bold;" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Customer
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" style="color:blue;font-weight: bold;" href="/customer/add/">Add customer</a>
+          <a class="dropdown-item" style="color:blue;font-weight: bold;" href=/customers/>Customer list</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" style="color:white;font-weight: bold;" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Product
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" style="color:blue;font-weight: bold;" href="/product/add/">Add product</a>
+          <a class="dropdown-item" style="color:blue;font-weight: bold;" href=/products/>Product list</a>
+        </div>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" style="color:white;font-weight: bold;" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          quotation
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" style="color:blue;font-weight: bold;" href="/quotation/add/">Add quotation</a>
+          <a class="dropdown-item" style="color:blue;font-weight: bold;" href=/quotations/>quotation list</a>
+        </div>
+      </li>
+      <li class="nav-item active">
+        <a class="nav-link" style="color:white;font-weight: bold;" href="/bills/">Bill</a>
+      </li>
+      <li class="nav-item">
+
+                <a class="nav-link" style="color:white;font-weight: bold;" href=/logout/>logout</a>
+
+      </li>
+    </ul>
+
+  </div>
+</nav>
+</header>
+
+
+       <main>
+            <div class="contener-fluid">
+
+<div class="card" style="widtd: 40rem;">
+  <div class="card-body">
+    <h4>DEVIS 3 du 18 octobre 2018 14:04
+        A relancer
+    </h4>
+    <h5 class="card-title">French-E </br> 10 rue des jaules 75000 Paris cedex 15 </br>tel: 01 89 58 74 10 </br> fax : 01 89 58 74 11  </h5>
+    <h6 class="card-title">guthub </h6>
+    <div>
+      guy teub </br> 145 14523 kjhgf </br> +33606060606
+    </div>
+
+    <div class="produit">
+
+    </div>
+    <table id="quottable">
+      <theader>
+
+        <tr id="entete">
+          <td>Code produit</td>
+          <td>Désignation du produit</td>
+          <td>Quantités souhaitées</td>
+          <td>Prix unitaire HT en €</td>
+          <td>Montant HT en €</td>
+        </tr>
+      </theader>
+
+      <tbody id="lines">
+
+
+        <tr id="line-16">
+          <td>
+            aaaaaaa
+          </td>
+          <td>
+            slip
+          </td>
+          <td>
+            <a href="#" class="quantity" data-type="number" data-pk=16 data-url=/quotation-line/16/quantity data-title="Enter Quantités">
+              1
+            </a>
+          </td>
+          <td class="price">
+            10,0
+          </td>
+          <td class="total-line">10</td>
+        </tr>
+
+
+        <tr id="line-17">
+          <td>
+            1000
+          </td>
+          <td>
+            TEST
+          </td>
+          <td>
+            <a href="#" class="quantity" data-type="number" data-pk=17 data-url=/quotation-line/17/quantity data-title="Enter Quantités">
+              1
+            </a>
+          </td>
+          <td class="price">
+            5,0
+          </td>
+          <td class="total-line">5</td>
+        </tr>
+
+
+        <tr id="line-18">
+          <td>
+            1000
+          </td>
+          <td>
+            TEST
+          </td>
+          <td>
+            <a href="#" class="quantity" data-type="number" data-pk=18 data-url=/quotation-line/18/quantity data-title="Enter Quantités">
+              1
+            </a>
+          </td>
+          <td class="price">
+            5,0
+          </td>
+          <td class="total-line">5</td>
+        </tr>
+
+
+        <tr id="line-19">
+          <td>
+            1000
+          </td>
+          <td>
+            TEST
+          </td>
+          <td>
+            <a href="#" class="quantity" data-type="number" data-pk=19 data-url=/quotation-line/19/quantity data-title="Enter Quantités">
+              3
+            </a>
+          </td>
+          <td class="price">
+            5,0
+          </td>
+          <td class="total-line">15</td>
+        </tr>
+
+
+        <tr id="line-20">
+          <td>
+            1000
+          </td>
+          <td>
+            TEST
+          </td>
+          <td>
+            <a href="#" class="quantity" data-type="number" data-pk=20 data-url=/quotation-line/20/quantity data-title="Enter Quantités">
+              3
+            </a>
+          </td>
+          <td class="price">
+            5,0
+          </td>
+          <td class="total-line">15</td>
+        </tr>
+
+
+        <tr id="line-21">
+          <td>
+            1000
+          </td>
+          <td>
+            TEST
+          </td>
+          <td>
+            <a href="#" class="quantity" data-type="number" data-pk=21 data-url=/quotation-line/21/quantity data-title="Enter Quantités">
+              3
+            </a>
+          </td>
+          <td class="price">
+            5,0
+          </td>
+          <td class="total-line">15</td>
+        </tr>
+
+
+        <tr id="line-22">
+          <td>
+            1000
+          </td>
+          <td>
+            TEST
+          </td>
+          <td>
+            <a href="#" class="quantity" data-type="number" data-pk=22 data-url=/quotation-line/22/quantity data-title="Enter Quantités">
+              3
+            </a>
+          </td>
+          <td class="price">
+            5,0
+          </td>
+          <td class="total-line">15</td>
+        </tr>
+
+
+        <tr id="line-23">
+          <td>
+            1000
+          </td>
+          <td>
+            TEST
+          </td>
+          <td>
+            <a href="#" class="quantity" data-type="number" data-pk=23 data-url=/quotation-line/23/quantity data-title="Enter Quantités">
+              3
+            </a>
+          </td>
+          <td class="price">
+            5,0
+          </td>
+          <td class="total-line">15</td>
+        </tr>
+
+      </tbody>
+      <tfooter>
+        <tr>
+          <td colspan="4">TOTAL HT</td>
+          <td id="total-ht">95,0</td>
+        </tr>
+        <tr>
+          <td colspan="4">TVA </td>
+          <td id="tva">20.6%</td>
+        </tr>
+        <tr>
+          <td colspan="4">TOTAL TTC</td>
+          <td id="total-ttc">1957,0</td>
+        </tr>
+
+      </tfooter>
+    </table>
+  </div>
+</div>
+
+
+            </div>
+       </main>
+   </div>
+
+
+
+
+
+
+</body>
+
+</html>

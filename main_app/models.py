@@ -10,6 +10,7 @@ from django_extensions.db.fields import AutoSlugField
 class Customer(models.Model):
     first_name = models.CharField(max_length=50, null=False, default="")
     last_name = models.CharField(max_length=50, null=True)
+    email = models.EmailField()
     slug = AutoSlugField(populate_from=['first_name', 'last_name'])
     business = models.CharField(max_length=150, null=True)
     siren = models.IntegerField()
