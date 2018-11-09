@@ -38,7 +38,6 @@ class ListCustomerView(ListView):
                 | Q(zipcode__contains=query) | Q(business__contains=query))
 
         else:
-
             return Customer.objects.all()
 
 

@@ -143,9 +143,9 @@ LOGOUT_URL = "/logout"
 
 # EMAIL :
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'localhost'
+EMAIL_HOST = 'smtp.orange.fr'
 EMAIL_PORT = 465
 EMAIL_HOST_USER =  my_email
 EMAIL_HOST_PASSWORD = email_password
-EMAIL_USE_TLS = False
+EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'Server <server@whatever.com>'

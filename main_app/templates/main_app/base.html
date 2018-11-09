@@ -2,7 +2,7 @@
 
 <!DOCTYPE html>
 <html>
-{% block head %}
+
 <head>
    <meta charset="utf-8" />
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,13 +14,11 @@
    <link rel="stylesheet" href="{% static 'x-editable/dist/jquery-editable/js/jquery-editable-poshytip.min.js' %}">
 
 </head>
-{% endblock %}
 
 <body>
    <div id="page" class="container container-fluid">
-        {% block header %}
-            {% include "main_app/header.html" %}
-        {% endblock %}
+
+       {% include "main_app/header.html" %}
 
        <main>
             <div class="contener-fluid">
@@ -30,14 +28,14 @@
        </main>
    </div>
 
-   {% block script %}
+
     <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
     <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/jquery.formset.js' %}"></script>
-    <script type="text/javascript" src="{% static 'x-editable/dist/jquery-editable/js/jquery-editable-poshytip.min.js' %}"> </script>
-    <script src="{% static 'js/base.js' %}"></script>
-    {% endblock %}
+    <script type="text/javascript" src="{% static 'x-editable/dist/jquery-editable/js/jquery-editable-poshytip.min.js' %}">
 
+    </script>
+    <script src="{% static 'js/base.js' %}"></script>
     {% block js_dependencies %}
     {% endblock %}
 </body>
